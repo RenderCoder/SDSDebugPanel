@@ -35,10 +35,13 @@ var dcKeys = ["WorkStatus", "ClockSwitch", "Switch", "WorkMode", "AppointSwitch"
 ];
 deviceType["消毒柜"] = dcKeys;
 
-for (var i=0,len=fotileKeys.length; i<len; i++) {
-    var item = fotileKeys[i];
-    addDataItem(item, "0");
+function initData() {
+    for (var i=0,len=fotileKeys.length; i<len; i++) {
+        var item = fotileKeys[i];
+        addDataItem(item, "0");
+    }
 }
+// initData();
 
 context = undefined;
 
@@ -178,10 +181,10 @@ var app = new Vue({
     mounted: function () {
         console.log('on mount');
         
-        this.updateTRD('消毒柜');
+        // this.updateTRD('消毒柜');
         
         // setup websocket
-        this.setupWebSocket();
+        // this.setupWebSocket();
         
         window.context = this;
     }
@@ -196,8 +199,30 @@ var sendData = function (data) {
 };
 
 var newDeviceData = function (deviceData) {
+    console.log(JSON.stringify(context.deviceData));
+    if (JSON.stringify(context.deviceData) == JSON.stringify([])) {
+        // 初始化数据
+        console.log(deviceData);
+        for (var key in deviceData) {
+            addDataItem(key, deviceData[key].value);
+        }
+        return;
+    }
+    
+    var command = deviceData;
     // 原生调用，传入更新后的数据
-    context.deviceData[0].value = '2'
+    for (var i=0,len=context.deviceData.length; i<len; i++) {
+        var item = context.deviceData[i];
+        console.log('key: ' + item.key + ', value: ' + command[item.key].value);
+        if (command[item.key]) {
+            if (command[item.key].value) {
+                context.deviceData[i].value = command[item.key].value;
+            } else {
+                context.deviceData[i].value = command[item.key];
+            }
+        }
+    }
+    
 };
 
 
