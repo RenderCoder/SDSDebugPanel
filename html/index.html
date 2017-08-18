@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Debug</title>
+    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../stylesheets/debug.css">
+    <script src="../javascripts/vue.js"></script>
+</head>
+<body>
+
+<div id="app" class="container">
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-4">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Debugger</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">for iOS Client</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">0.0.1</a>
+                </li>
+            </ul>
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- 切换 TRD  -->
+    <div class="row" style="margin-bottom: 12px;">
+        <div class="col-md-12">
+            <div class="btn-group" role="group" aria-label="...">
+                <template v-for="(item, key) in deviceType">
+                    <button type="button" :class="currentDeviceType == key ? 'btn btn-primary' : 'btn btn-secondary'" @click="switchTRD(key)">{{key}}</button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRD 表格呈现-->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Key</td>
+            <td>Value</td>
+        </tr>
+        </thead>
+        <tbody>
+        <template v-for="(item, index) in deviceData">
+            <tr>
+                <td>{{index}}</td>
+                <td>
+                    <input type="text" class="form-control" v-model="item.key" v-on:keyup.enter="uploadDeviceStatus">
+                </td>
+                <td>
+                    <input type="number" class="form-control" v-model="item.value" v-on:keyup.enter="uploadDeviceStatus">
+                </td>
+            </tr>
+        </template>
+
+        </tbody>
+    </table>
+
+    <div class="row bottom-bar">
+        <div class="col-sm-6 col-xs-12 col-xl-6 text-left">
+            <button class="btn btn-secondary" @click="addRow">Add row</button>
+            <button class="btn btn-secondary" @click="toggleDebugMode">Toggle debug mode</button>
+        </div>
+        <div class="col-sm-6 col-xs-12 col-xl-6 text-right">
+            <button class="btn btn-primary" @click="uploadDeviceStatus">Upload device status</button>
+        </div>
+    </div>
+
+
+    <template v-if="debugMode">
+        <hr>
+        <h4>data</h4>
+        <pre>{{deviceData}}</pre>
+    </template>
+
+
+</div>
+
+<script src="../javascripts/debug.js"></script>
+
+</body>
+</html>
