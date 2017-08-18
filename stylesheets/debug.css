@@ -1,6 +1,21 @@
+@font-face {
+    font-family: 'iconfont';  /* project id 389408 */
+    src: url('//at.alicdn.com/t/font_389408_5j3f1j9up0v8to6r.eot');
+    src: url('//at.alicdn.com/t/font_389408_5j3f1j9up0v8to6r.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_389408_5j3f1j9up0v8to6r.woff') format('woff'),
+    url('//at.alicdn.com/t/font_389408_5j3f1j9up0v8to6r.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_389408_5j3f1j9up0v8to6r.svg#iconfont') format('svg');
+}
+
 body {
     padding-bottom: 80px;
 }
+
+#app {
+    padding: 8px;
+    padding-bottom: 50px;
+}
+
 .bottom-bar {
     position: fixed;
     left: 0;
@@ -9,4 +24,25 @@ body {
     background-color: #ffffff;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     padding: 12px;
+}
+
+.table td, .table th{
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.data-table.table tr td:nth-child(3) {
+    width: 70px;
+}
+
+.data-table.table tr td:last-child {
+    width: 20px;
+}
+
+.data-table.table tr td:first-child {
+    padding: 0.75em 0.5em 0.75em 0.2em;
+}
+
+.data-table.table tr td:first-child span.iconfont {
+    font-size: 24px;
 }

@@ -40,6 +40,7 @@ for (var i=0,len=fotileKeys.length; i<len; i++) {
     addDataItem(item, "0");
 }
 
+context = undefined;
 
 var app = new Vue({
     el: '#app',
@@ -49,7 +50,8 @@ var app = new Vue({
         debugMode: false,
         deviceType: deviceType,
         currentDeviceType: '',
-        ws: undefined
+        ws: undefined,
+        selectedIndexs: []
     },
     methods: {
         uploadDeviceStatus: function () {
@@ -132,6 +134,32 @@ var app = new Vue({
             this.ws.onclose = function(evt) {
                 console.log("Connection closed.");
             };
+        },
+        sendItemData: function (index) {
+            var dataItem = this.deviceData[index];
+            console.log(JSON.stringify(dataItem));
+            var command = {};
+            command[dataItem.key] = dataItem.value;
+            sendData(command);
+        },
+        hasSelected: function (index) {
+            return this.selectedIndexs.indexOf(index)>=0;
+        },
+        selectIndex: function (index) {
+            if (!this.hasSelected(index)) {
+                this.selectedIndexs.push(index);
+            } else {
+                this.selectedIndexs.splice(this.selectedIndexs.indexOf(index), 1);
+            }
+        },
+        sendSelectedDevice: function () {
+            var dataCollection = {};
+            for (var i=0, len=this.selectedIndexs.length; i<len; i++) {
+                var dataItem = this.deviceData[this.selectedIndexs[i]];
+                dataCollection[dataItem.key] = dataItem.value;
+            }
+            
+            sendData(dataCollection);
         }
     },
     computed: {
@@ -154,11 +182,22 @@ var app = new Vue({
         
         // setup websocket
         this.setupWebSocket();
+        
+        window.context = this;
     }
 });
 
 // var ws = new WebSocket("ws://localhost:8000");
 
+var sendData = function (data) {
+    // 发送数据到 SDS
+    console.warn('sendData: \n' + JSON.stringify(data, null, '\t'));
+    window.webkit.messageHandlers.notification.postMessage( data );
+};
 
+var newDeviceData = function (deviceData) {
+    // 原生调用，传入更新后的数据
+    context.deviceData[0].value = '2'
+};
 
 
