@@ -213,7 +213,9 @@ var newDeviceData = function (deviceData) {
     // 原生调用，传入更新后的数据
     for (var i=0,len=context.deviceData.length; i<len; i++) {
         var item = context.deviceData[i];
-        console.log('key: ' + item.key + ', value: ' + command[item.key].value);
+        if (item.key == 'uuid') {continue;}
+        // console.log('key: ' + item.key + ', value: ' + command[item.key].value);
+        
         if (command[item.key]) {
             if (command[item.key].value) {
                 context.deviceData[i].value = command[item.key].value;
